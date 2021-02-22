@@ -1,0 +1,203 @@
+int fireTriggerOne()
+{
+	if (Throttle[PSB] & Throttle[APPAT] | Joystick[S4] | lockPrimaryFire)
+	{
+		
+		lockPrimaryFire = !lockPrimaryFire;
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Trigger one on (locked) = %d\xa", lockPrimaryFire);
+		}
+	} else {
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Trigger one on\xa");
+		}
+	}
+	
+	ActKey(KEYON+DOWN+ACT_PRIMARY_FIRE);
+}
+
+int releaseTriggerOne()
+{
+	if (!lockPrimaryFire)
+	{
+		ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
+		
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Trigger one off\xa");
+		}
+	}
+}
+
+int fireTriggerTwo() 
+{
+	if (Throttle[PSB] & Throttle[APALT])
+	{
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Secondary Trigger On\xa");
+		}
+		ActKey(KEYON+DOWN+ACT_SECONDARY_FIRE);
+	}
+}
+
+int releaseTriggerTwo() 
+{
+	if (!Joystick[S2] & !(Throttle[PSB] & Throttle[SC]))
+	{
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Secondary Trigger Off\xa");
+		}
+		ActKey(KEYON+UP+ACT_SECONDARY_FIRE);
+	}
+}
+
+int clearTriggerLock()
+{
+	if (DEBUG_TRIGGER_ACTION)
+	{
+		printf("Clearing any lock\xa");
+	}
+	if (lockPrimaryFire)
+	{
+		if (DEBUG_TRIGGER_ACTION)
+		{
+			printf("Resetting Primary Fire Lock\xa");
+		}
+		
+		lockPrimaryFire = 0;
+		ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
+	}
+}
+
+int EDStatusFlagsCallback(int data, int size)
+{
+	Map(&gameStatusFlag, data);
+	
+	if (DEBUG_API_CALL)
+	{
+		printf("Data Value Receieved = %d\xa", gameStatusFlag);
+	}
+
+	docked                = getFlagState(FLAG_DOCKED);
+	landed                = getFlagState(FLAG_LANDED);
+	landingGearDown       = getFlagState(FLAG_LANDING_GEAR_DOWN);
+	shieldsUp             = getFlagState(FLAG_SHEILDS_UP);
+	supercruise           = getFlagState(FLAG_SUPERCRUISE);
+	flightAssistOff       = getFlagState(FLAG_FLIGHT_ASSIST_OFF);
+	hardpointsDeployed    = getFlagState(FLAG_HARDPOINTS_DEPLOYED);
+	inWing                = getFlagState(FLAG_IN_WING);
+	lightsOn              = getFlagState(FLAG_LIGHTS_ON);
+	cargoScoopDeployed    = getFlagState(FLAG_CARGO_SCOOP_DEPLOYED);
+	silentRunning         = getFlagState(FLAG_SILENT_RUNNING);
+	scoopingFuel          = getFlagState(FLAG_SCOOPING_FUEL);
+	srvHandbrake          = getFlagState(FLAG_SRV_HANDBRAKE);
+	srvTurret             = getFlagState(FLAG_SRV_TURRET);
+	srvTurretRetracted    = getFlagState(FLAG_SRV_TURRET_RETRACTED);
+	srvDriveAssist        = getFlagState(FLAG_SRV_DRIVE_ASSIST);
+	fsdMassLocked         = getFlagState(FLAG_FSD_MASS_LOCKED);
+	fsdCharging           = getFlagState(FLAG_FSD_CHARGING);
+	fsdCooldown           = getFlagState(FLAG_FSD_COOLDOWN);
+	lowFuel               = getFlagState(FLAG_LOW_FUEL);
+	overHeating           = getFlagState(FLAG_OVER_HEATING);
+	hasLatLong            = getFlagState(FLAG_HAS_LAT_LONG);
+	isInDanger            = getFlagState(FLAG_IS_IN_DANGER);
+	beingInterdicted      = getFlagState(FLAG_BEING_INTERDICTED);
+	inMainship            = getFlagState(FLAG_IN_MAIN_SHIP);
+	inFighter             = getFlagState(FLAG_IN_FIGHTER);
+	inSrv                 = getFlagState(FLAG_IN_SRV);
+	hudAnalysisMode       = getFlagState(FLAG_HUD_ANALYSIS_MODE);
+	nightVision           = getFlagState(FLAG_NIGHT_VISION);
+	altitudeFromAvgRadius = getFlagState(FLAG_ALT_FROM_AVG_RADIUS);
+	fsdJump               = getFlagState(FLAG_FSD_JUMP);
+	srvHighBeam           = getFlagState(FLAG_SRV_HIGH_BEAM);
+	
+	SetLedState(LED1, hardpointsDeployed);
+	SetLedState(LED2, cargoScoopDeployed);
+	SetLedState(LED3, landingGearDown);
+
+	SetLedState(LED5, overHeating);
+}
+
+int getFlagState(int flag)
+{
+	return flag == (gameStatusFlag & flag);
+}
+
+int SetLedState(int led, int state)
+{
+	if (state) 
+	{
+		ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+led));
+	} else 
+	{
+		ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-led));
+	}
+}
+int setPipConfig(int pip1=0, int pip2=0, int pip3=0, int pip4=0)
+{
+	if (pip3 == 0)
+	{
+		ActKey(KEYON+CHAIN(
+			PULSE+ACT_PIP_RESET, D(),
+			PULSE+pip1, D(),
+			PULSE+pip2
+		));
+	} else {
+		ActKey(KEYON+CHAIN(
+			PULSE+ACT_PIP_RESET, D(),
+			PULSE+pip1, D(),
+			PULSE+pip2, D(),
+			PULSE+pip3, D(),
+			PULSE+pip4
+		));
+	}
+}
+
+
+int setJoystickCurve(int profile)
+{
+	SetSCurve(&Joystick, JOYX, 0, 0, 0, JOY_CURVE[profile], JOY_ZOOM[profile]);
+	SetSCurve(&Joystick, JOYY, 0, 0, 0, JOY_CURVE[profile], JOY_ZOOM[profile]);
+}
+
+int resupply()
+{
+	ActKey(KEYON+CHAIN(
+		PULSE+ACT_UI_SELECT, D(),
+		PULSE+ACT_UI_RIGHT, D(),
+		PULSE+ACT_UI_SELECT, D(),
+		PULSE+ACT_UI_RIGHT, D(),
+		PULSE+ACT_UI_SELECT, D(),
+		PULSE+ACT_UI_LEFT, D(),
+		PULSE+ACT_UI_LEFT
+	));
+}
+
+int stowAndSupercruise()
+{
+	clearTriggerLock();
+
+	if (hardpointsDeployed)
+	{
+		ActKey(KEYON+PULSE+ACT_HARDPOINTS);
+	}
+
+	if (cargoScoopDeployed)
+	{
+		ActKey(KEYON+PULSE+ACT_CARGO_SCOOP);
+	}
+
+	if (landingGearDown)
+	{
+		ActKey(KEYON+PULSE+ACT_LANDING_GEAR);
+	}
+
+    ActKey(KEYON+CHAIN(
+        D(), PULSE+ACT_ENGINE_BOOST, 
+        D(), PULSE+ACT_SUPERCRUISE_TOGGLE 
+    ));
+}

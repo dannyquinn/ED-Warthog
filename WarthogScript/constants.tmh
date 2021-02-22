@@ -1,0 +1,140 @@
+define DELAY_PIPS                   333
+
+define DEBUG_API_CALL               0
+define DEBUG_TRIGGER_ACTION         0
+
+/*
+	Game Status Codes 
+	forums.frontier.co.uk/threads/journal-docs-for-v3-7-fleet-carriers-beta.540745/
+*/
+
+define FLAG_DOCKED                  1 << 0
+define FLAG_LANDED                  1 << 1
+define FLAG_LANDING_GEAR_DOWN       1 << 2
+define FLAG_SHEILDS_UP              1 << 3
+define FLAG_SUPERCRUISE             1 << 4
+define FLAG_FLIGHT_ASSIST_OFF       1 << 5
+define FLAG_HARDPOINTS_DEPLOYED     1 << 6
+define FLAG_IN_WING                 1 << 7
+define FLAG_LIGHTS_ON               1 << 8
+define FLAG_CARGO_SCOOP_DEPLOYED    1 << 9
+define FLAG_SILENT_RUNNING          1 << 10
+define FLAG_SCOOPING_FUEL           1 << 11
+define FLAG_SRV_HANDBRAKE           1 << 12
+define FLAG_SRV_TURRET              1 << 13
+define FLAG_SRV_TURRET_RETRACTED    1 << 14
+define FLAG_SRV_DRIVE_ASSIST        1 << 15
+define FLAG_FSD_MASS_LOCKED         1 << 16
+define FLAG_FSD_CHARGING            1 << 17
+define FLAG_FSD_COOLDOWN            1 << 18
+define FLAG_LOW_FUEL                1 << 19
+define FLAG_OVER_HEATING            1 << 20
+define FLAG_HAS_LAT_LONG            1 << 21
+define FLAG_IS_IN_DANGER            1 << 22
+define FLAG_BEING_INTERDICTED       1 << 23
+define FLAG_IN_MAIN_SHIP            1 << 24
+define FLAG_IN_FIGHTER              1 << 25
+define FLAG_IN_SRV                  1 << 26
+define FLAG_HUD_ANALYSIS_MODE       1 << 27
+define FLAG_NIGHT_VISION            1 << 28
+define FLAG_ALT_FROM_AVG_RADIUS     1 << 29
+define FLAG_FSD_JUMP                1 << 30
+define FLAG_SRV_HIGH_BEAM           1 << 31
+
+/*
+	Button Actions 
+*/
+
+define ACT_PITCH_UP                 DXHATDOWN
+define ACT_PITCH_DOWN               DXHATUP
+define ACT_YAW_LEFT                 DXHATLEFT 
+define ACT_YAW_RIGHT                DXHATRIGHT
+
+// 32 DX Buttons available
+define ACT_PRIMARY_FIRE             DX1 
+define ACT_SECONDARY_FIRE           DX2 
+
+define ACT_HEADLOOK                 DX3
+define ACT_FLIGHT_ASSIST_OFF        DX4
+define ACT_SHIELD_BANK              DX5
+define ACT_HEATSINK                 DX6
+
+define ACT_PANEL_COMMS              DX7 
+define ACT_PANEL_INTERNAL           DX8
+define ACT_PANEL_ROLE               DX9
+define ACT_PANEL_EXTERNAL           DX10
+
+define ACT_PIP_ENGINE               DX11
+define ACT_PIP_WEAPON               DX12 
+define ACT_PIP_RESET                DX13 
+define ACT_PIP_SYSTEM               DX14
+
+define ACT_THROTTLE_REVERSE_TOGGLE  DX15
+define ACT_THRUST_UP                DX16
+define ACT_THRUST_RIGHT             DX17 
+define ACT_THRUST_DOWN              DX18 
+define ACT_THRUST_LEFT              DX19 
+define ACT_THRUST_FORWARD           DX20
+define ACT_THRUST_BACKWARD          DX21
+
+define ACT_LIGHTS_TOGGLE            DX22
+
+define ACT_TARGET_NEXT_SHIP         DX23
+define ACT_TARGET_PREV_SHIP         DX24
+
+define ACT_SILENT_RUNNING           DX25
+define ACT_ROTATIONAL_CORRECTION    DX26
+
+
+define ACT_PREV_FIRE_GROUP          F1 
+define ACT_NEXT_FIRE_GROUP          F2 
+define ACT_TARGET_NEXT_HOSTILE      F3
+define ACT_TARGET_PREV_HOSTILE      F4
+define ACT_NEXT_SYSTEM_IN_ROUTE     F5
+
+define ACT_GALAXY_MAP               'f'
+define ACT_SYSTEM_MAP               'g'
+
+define ACT_UI_UP                    'w'
+define ACT_UI_DOWN                  's'
+define ACT_UI_LEFT                  'a'
+define ACT_UI_RIGHT                 'd'
+define ACT_UI_PREV_TAB              'q'
+define ACT_UI_NEXT_TAB              'e'
+define ACT_UI_SELECT                ENT 
+define ACT_UI_BACK                  L_SHIFT 
+
+define ACT_LANDING_GEAR             'v'
+define ACT_CARGO_SCOOP              'c'
+define ACT_ORBIT_LINES              'z'
+define ACT_NIGHT_VISION             'x'
+define ACT_ENGINE_BOOST             'b'
+define ACT_HUD_MODE                 'r'
+define ACT_HARDPOINTS               't' 
+define ACT_TARGET_AHEAD             'e' 
+define ACT_TARGET_HIGHEST_THREAT    'q'
+
+define ACT_ENGINES_STOP             '1'
+define ACT_ENGINES_25_PERCENT       '2'
+define ACT_ENGINES_50_PERCENT       '3'
+define ACT_ENGINES_75_PERCENT       '4'
+define ACT_ENGINES_MAX              '5'
+
+define ACT_SUPERCRUISE              'a'
+define ACT_SUPERCRUISE_TOGGLE       's'
+define ACT_HYPERSPACE               'd'
+
+/*
+	Pip 
+*/
+
+define ENG                          ACT_PIP_ENGINE
+define WEP                          ACT_PIP_WEAPON
+define RST                          ACT_PIP_RESET
+define SYS                          ACT_PIP_SYSTEM
+
+/*
+	Joystick Axis Curve
+*/
+short JOY_CURVE[]                   = {-1, 0,  2};
+short JOY_ZOOM[]                    = { 1, 0, -1}; 

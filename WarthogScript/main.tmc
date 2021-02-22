@@ -1,0 +1,35 @@
+include "target.tmh"
+include "constants.tmh"
+include "functions.tmh"
+include "variables.tmh"
+include "bindings.tmh"
+
+int main()
+{
+    if(Init(&EventHandle)) 
+    {
+    	return 1; // declare the event handler, return on error
+    }
+	
+	// EDStatusFlagClient.exe will post status flag
+	// changes to port 1000 on local machine.
+	// Pass to the EDStatusFlagsCallback function for 
+	// processing.  
+	RegisterGameCallback(1000, &EDStatusFlagsCallback);
+	
+	// Modifier Settings 
+	SetShiftButton(&Joystick, S4, &Throttle, PSF, PSB);
+	
+	// Map Axes & Buttons 
+	initAxis();
+	initJoystick();
+	initThrottle();
+}
+
+int EventHandle(int type, alias o, int x)
+{
+    DefaultMapping(&o, x);
+	
+	//add event handling code here
+}
+
