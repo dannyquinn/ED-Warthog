@@ -243,8 +243,8 @@ int initThrottle()
 	MapKey(&Throttle, RDRDIS, 0);
 	
 	// APU
-	MapKey(&Throttle, APUON, 0);
-	MapKey(&Throttle, APUOFF, 0);
+	MapKey(&Throttle, APUON, 0); // Used by Autoscan feature
+	MapKey(&Throttle, APUOFF, 0);// Used by Autoscan feature
 	
 	// ENG OPER 
 	MapKey(&Throttle, EOLMOTOR, 0);

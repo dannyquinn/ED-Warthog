@@ -117,18 +117,16 @@ int EDStatusFlagsCallback(int data, int size)
 	fsdJump               = getFlagState(FLAG_FSD_JUMP);
 	srvHighBeam           = getFlagState(FLAG_SRV_HIGH_BEAM);
 	
-	
-	
-	if (DEBUG_AUTO_SCAN)
+	//
+	// Autoscan system when jumping in.  
+	// 
+	if (oldFsdJump & !fsdJump & hudAnalysisMode & Throttle[APUON])
 	{
-		printf("Old Fsd Jump %d\xa", oldFsdJump);
-		printf("New Fsd Jump %d\xa", fsdJump);
-		printf("APUON        %d\xa", Throttle[APUON]);
-		printf("PSB          %d\xa", Throttle[PSB]);
-	}
-	
-	if (oldFsdJump & !fsdJump & Throttle[APUON] & !Throttle[PSB])
-	{
+		 
+		if (DEBUG_AUTO_SCAN) {
+			printf("Starting system scan..\xa");
+		}
+
 		DeferCall(DELAY_WAIT, &ActKey, KEYON+DOWN+ACT_PRIMARY_FIRE);
 		DeferCall(DELAY_WAIT+DELAY_SYSTEM_SCAN, &ActKey, KEYON+UP+ACT_PRIMARY_FIRE);
 	}
