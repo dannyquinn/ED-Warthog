@@ -1,7 +1,10 @@
 define DELAY_PIPS                   333
+define DELAY_WAIT                   1000
+define DELAY_SYSTEM_SCAN            6500
 
 define DEBUG_API_CALL               0
 define DEBUG_TRIGGER_ACTION         0
+define DEBUG_AUTO_SCAN              0
 
 /*
 	Game Status Codes 

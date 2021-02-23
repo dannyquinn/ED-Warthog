@@ -81,6 +81,8 @@ int EDStatusFlagsCallback(int data, int size)
 	{
 		printf("Data Value Receieved = %d\xa", gameStatusFlag);
 	}
+	
+	int oldFsdJump = fsdJump;
 
 	docked                = getFlagState(FLAG_DOCKED);
 	landed                = getFlagState(FLAG_LANDED);
@@ -115,10 +117,26 @@ int EDStatusFlagsCallback(int data, int size)
 	fsdJump               = getFlagState(FLAG_FSD_JUMP);
 	srvHighBeam           = getFlagState(FLAG_SRV_HIGH_BEAM);
 	
+	
+	
+	if (DEBUG_AUTO_SCAN)
+	{
+		printf("Old Fsd Jump %d\xa", oldFsdJump);
+		printf("New Fsd Jump %d\xa", fsdJump);
+		printf("APUON        %d\xa", Throttle[APUON]);
+		printf("PSB          %d\xa", Throttle[PSB]);
+	}
+	
+	if (oldFsdJump & !fsdJump & Throttle[APUON] & !Throttle[PSB])
+	{
+		DeferCall(DELAY_WAIT, &ActKey, KEYON+DOWN+ACT_PRIMARY_FIRE);
+		DeferCall(DELAY_WAIT+DELAY_SYSTEM_SCAN, &ActKey, KEYON+UP+ACT_PRIMARY_FIRE);
+	}
+	
 	SetLedState(LED1, hardpointsDeployed);
 	SetLedState(LED2, cargoScoopDeployed);
 	SetLedState(LED3, landingGearDown);
-
+	
 	SetLedState(LED5, overHeating);
 }
 
