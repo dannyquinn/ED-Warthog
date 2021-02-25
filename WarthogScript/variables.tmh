@@ -1,39 +1,8 @@
-int gameStatusFlag;
+int currentGameStatus;
+int previousGameStatus;
 
 int lockPrimaryFire;
-int lockSecondaryFire;
 
-// Status Flags from ED status.json
-int docked;
-int landed;
-int landingGearDown;
-int shieldsUp;	
-int supercruise;
-int flightAssistOff;
-int hardpointsDeployed;
-int inWing;
-int lightsOn;
-int cargoScoopDeployed;
-int silentRunning;
-int scoopingFuel;
-int srvHandbrake;
-int srvTurret;
-int srvTurretRetracted;
-int srvDriveAssist;
-int fsdMassLocked;
-int fsdCharging;
-int fsdCooldown;
-int lowFuel;
-int overHeating;
-int hasLatLong;
-int isInDanger;
-int beingInterdicted;
-int inMainship;
-int inFighter;
-int inSrv;
-int hudAnalysisMode;
-int nightVision;
-int altitudeFromAvgRadius;
-int fsdJump;
-int srvHighBeam;
+
+
 

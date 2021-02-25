@@ -75,52 +75,22 @@ int clearTriggerLock()
 
 int EDStatusFlagsCallback(int data, int size)
 {
-	Map(&gameStatusFlag, data);
+	previousGameStatus = currentGameStatus;
+	
+	Map(&data, data);
+	
+	currentGameStatus = data;
 	
 	if (DEBUG_API_CALL)
 	{
-		printf("Data Value Receieved = %d\xa", gameStatusFlag);
+		printf("Data Value Receieved = %d\xa", currentGameStatus);
+		printf("Previous Data Value  = %d\xa", previousGameStatus);
 	}
-	
-	int oldFsdJump = fsdJump;
-
-	docked                = getFlagState(FLAG_DOCKED);
-	landed                = getFlagState(FLAG_LANDED);
-	landingGearDown       = getFlagState(FLAG_LANDING_GEAR_DOWN);
-	shieldsUp             = getFlagState(FLAG_SHEILDS_UP);
-	supercruise           = getFlagState(FLAG_SUPERCRUISE);
-	flightAssistOff       = getFlagState(FLAG_FLIGHT_ASSIST_OFF);
-	hardpointsDeployed    = getFlagState(FLAG_HARDPOINTS_DEPLOYED);
-	inWing                = getFlagState(FLAG_IN_WING);
-	lightsOn              = getFlagState(FLAG_LIGHTS_ON);
-	cargoScoopDeployed    = getFlagState(FLAG_CARGO_SCOOP_DEPLOYED);
-	silentRunning         = getFlagState(FLAG_SILENT_RUNNING);
-	scoopingFuel          = getFlagState(FLAG_SCOOPING_FUEL);
-	srvHandbrake          = getFlagState(FLAG_SRV_HANDBRAKE);
-	srvTurret             = getFlagState(FLAG_SRV_TURRET);
-	srvTurretRetracted    = getFlagState(FLAG_SRV_TURRET_RETRACTED);
-	srvDriveAssist        = getFlagState(FLAG_SRV_DRIVE_ASSIST);
-	fsdMassLocked         = getFlagState(FLAG_FSD_MASS_LOCKED);
-	fsdCharging           = getFlagState(FLAG_FSD_CHARGING);
-	fsdCooldown           = getFlagState(FLAG_FSD_COOLDOWN);
-	lowFuel               = getFlagState(FLAG_LOW_FUEL);
-	overHeating           = getFlagState(FLAG_OVER_HEATING);
-	hasLatLong            = getFlagState(FLAG_HAS_LAT_LONG);
-	isInDanger            = getFlagState(FLAG_IS_IN_DANGER);
-	beingInterdicted      = getFlagState(FLAG_BEING_INTERDICTED);
-	inMainship            = getFlagState(FLAG_IN_MAIN_SHIP);
-	inFighter             = getFlagState(FLAG_IN_FIGHTER);
-	inSrv                 = getFlagState(FLAG_IN_SRV);
-	hudAnalysisMode       = getFlagState(FLAG_HUD_ANALYSIS_MODE);
-	nightVision           = getFlagState(FLAG_NIGHT_VISION);
-	altitudeFromAvgRadius = getFlagState(FLAG_ALT_FROM_AVG_RADIUS);
-	fsdJump               = getFlagState(FLAG_FSD_JUMP);
-	srvHighBeam           = getFlagState(FLAG_SRV_HIGH_BEAM);
 	
 	//
 	// Autoscan system when jumping in.  
 	// 
-	if (oldFsdJump & !fsdJump & hudAnalysisMode & Throttle[APUON])
+	if (flag(FLAG_HUD_ANALYSIS_MODE) & flagDown(FLAG_FSD_JUMP) & Throttle[APUON])
 	{
 		 
 		if (DEBUG_AUTO_SCAN) {
@@ -131,16 +101,28 @@ int EDStatusFlagsCallback(int data, int size)
 		DeferCall(DELAY_WAIT+DELAY_SYSTEM_SCAN, &ActKey, KEYON+UP+ACT_PRIMARY_FIRE);
 	}
 	
-	SetLedState(LED1, hardpointsDeployed);
-	SetLedState(LED2, cargoScoopDeployed);
-	SetLedState(LED3, landingGearDown);
+	SetLedState(LED1, flag(FLAG_HARDPOINTS_DEPLOYED));
+	SetLedState(LED2, flag(FLAG_CARGO_SCOOP_DEPLOYED));
+	SetLedState(LED3, flag(FLAG_LANDING_GEAR_DOWN));
 	
-	SetLedState(LED5, overHeating);
+	SetLedState(LED5, flag(FLAG_OVER_HEATING));
 }
 
-int getFlagState(int flag)
+int flag(int flags){
+	return (currentGameStatus & flags) == flags;
+}
+
+int previousFlag(int flags)
 {
-	return flag == (gameStatusFlag & flag);
+	return (previousGameStatus & flags) == flags;
+}
+
+int flagDown(int flags) {
+	return !flag(flags) & previousFlag(flags);
+}
+
+int flagUp(int flags) {
+	return flag(flags) & !previousFlag(flags);
 }
 
 int SetLedState(int led, int state)
@@ -197,17 +179,17 @@ int stowAndSupercruise()
 {
 	clearTriggerLock();
 
-	if (hardpointsDeployed)
+	if (flag(FLAG_HARDPOINTS_DEPLOYED))
 	{
 		ActKey(KEYON+PULSE+ACT_HARDPOINTS);
 	}
 
-	if (cargoScoopDeployed)
+	if (flag(FLAG_CARGO_SCOOP_DEPLOYED))
 	{
 		ActKey(KEYON+PULSE+ACT_CARGO_SCOOP);
 	}
 
-	if (landingGearDown)
+	if (flag(FLAG_LANDING_GEAR_DOWN))
 	{
 		ActKey(KEYON+PULSE+ACT_LANDING_GEAR);
 	}
