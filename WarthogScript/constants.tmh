@@ -1,10 +1,9 @@
 define DELAY_PIPS                   333
 define DELAY_WAIT                   1000
 define DELAY_SYSTEM_SCAN            6500
-
-define DEBUG_API_CALL               0
-define DEBUG_TRIGGER_ACTION         0
-define DEBUG_AUTO_SCAN              0
+define DELAY_PULSE                  25
+define DELAY_DEFAULT                33
+define DELAY_SMALL                  100
 
 /*
 	Game Status Codes 
@@ -88,6 +87,10 @@ define ACT_TARGET_PREV_SHIP         DX24
 define ACT_SILENT_RUNNING           DX25
 define ACT_ROTATIONAL_CORRECTION    DX26
 
+define ACT_TARGET_PREV_MODULE       DX27
+define ACT_TARGET_NEXT_MODULE       DX28
+define ACT_CHAFF                    DX29
+define ACT_ECM                      DX30
 
 define ACT_PREV_FIRE_GROUP          F1 
 define ACT_NEXT_FIRE_GROUP          F2 

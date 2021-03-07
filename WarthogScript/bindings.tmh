@@ -10,11 +10,6 @@ int initAxis()
 	
 	MapAxis(&Throttle, SCX, DX_XROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
 	MapAxis(&Throttle, SCY, DX_YROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-	
-	int slowCurve = LIST(0,0, 10,15, 20,30, 30,55, 40,50, 50,50, 60, 50, 70,55, 80,70, 90,85, 100,100);
-	
-	SetCustomCurve(&Throttle, SCX, slowCurve);
-	SetCustomCurve(&Throttle, SCY, slowCurve);
 }
 
 // Joystick  
@@ -22,57 +17,51 @@ int initAxis()
 int initJoystick()
 {
 	// Trim Hat
-	MapKeyIO(&Joystick, H1U, 
-		ACT_SUPERCRUISE_TOGGLE,
-		ACT_PITCH_DOWN
-	);
+	MapKey(&Joystick, H1U, ACT_PITCH_DOWN);
 	
-	MapKeyIO(&Joystick, H1R, 
-		ACT_ENGINES_MAX,
-		ACT_YAW_RIGHT
-	);
+	MapKey(&Joystick, H1R, ACT_YAW_RIGHT);
 	
-	MapKeyIO(&Joystick, H1D,
-		ACT_SUPERCRUISE,
-		ACT_PITCH_UP
-	);
+	MapKey(&Joystick, H1D, ACT_PITCH_UP);
 	
-	MapKeyIO(&Joystick, H1L,
-		ACT_ENGINES_75_PERCENT,
-		ACT_YAW_LEFT);
+	MapKey(&Joystick, H1L, ACT_YAW_LEFT);
 
 	// TMS 4-Way 
-	MapKey(&Joystick, H2U,
+
+	MapKeyIO(&Joystick, H2U, 
+		ACT_SHIELD_BANK,
 		ACT_PANEL_COMMS
 	);
 	
-	MapKey(&Joystick, H2R,
+	MapKeyIO(&Joystick, H2R, 
+		ACT_CHAFF,
 		ACT_PANEL_INTERNAL
 	);
 	
-	MapKey(&Joystick, H2D,
+	MapKeyIO(&Joystick, H2D, 
+		ACT_HEATSINK,
 		ACT_PANEL_ROLE
 	);
 	
-	MapKey(&Joystick, H2L,
+	MapKeyIO(&Joystick, H2L, 
+		ACT_ECM,
 		ACT_PANEL_EXTERNAL
 	);
 
 	// DMS 4-Way
 	MapKeyIOUMD(&Joystick, H3U,
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, ENG);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, ENG);"),           DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, ENG);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, ENG);"),           DELAY_PIPS),
+		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, ENG);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, SYS);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS);"),           DELAY_PIPS)
 	);
 	
 	MapKeyIOUMD(&Joystick, H3R, 
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, SYS, WEP, WEP);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, WEP);"),           DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, SYS, WEP, WEP);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, WEP);"),           DELAY_PIPS),
+		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, SYS, WEP, WEP);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, ENG, WEP, ENG);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, ENG);"),           DELAY_PIPS)
 	);
@@ -80,10 +69,10 @@ int initJoystick()
 	MapKey(&Joystick, H3D, PULSE+ACT_PIP_RESET);
 	
 	MapKeyIOUMD(&Joystick, H3L,
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, SYS);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, SYS);"),           DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, SYS);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, SYS);"),           DELAY_PIPS),
+		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, SYS);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, WEP);"), DELAY_PIPS),
 		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP);"),           DELAY_PIPS)
 	);
@@ -91,7 +80,7 @@ int initJoystick()
 	// CMS 4-Way w. push button
 	MapKeyIO(&Joystick, H4U,
 		ACT_LANDING_GEAR,
-		ACT_UI_UP
+		ACT_UI_UP // Bound to boost as well
 	);
 	
 	MapKeyIO(&Joystick, H4R,
@@ -99,12 +88,12 @@ int initJoystick()
 			EXEC("clearTriggerLock();"),
 			ACT_NEXT_FIRE_GROUP
 		),	
-		ACT_UI_RIGHT
+		ACT_UI_RIGHT // Bound to supercruise as well
 	);
 	
 	MapKeyIO(&Joystick, H4D,
 		ACT_CARGO_SCOOP,
-		ACT_UI_DOWN 
+		ACT_UI_DOWN // Bound to supercruise toggle as well
 	);
 	
 	MapKeyIO(&Joystick, H4L,
@@ -112,7 +101,7 @@ int initJoystick()
 			EXEC("clearTriggerLock();"),
 			ACT_PREV_FIRE_GROUP 
 		),
-		ACT_UI_LEFT
+		ACT_UI_LEFT // Bound to 75% engines as well
 	);
 	
 	MapKeyIO(&Joystick, H4P,
@@ -141,7 +130,7 @@ int initJoystick()
 	MapKey(&Joystick, S1, PULSE+ACT_UI_BACK);
 	
 	// NWS Button 
-	MapKey(&Joystick, S3, PULSE+ACT_ENGINE_BOOST);
+	MapKey(&Joystick, S3, 0);
 	
 	// Pinkie Lever 
 	MapKey(&Joystick, S4, 0); // DO NOT USE - Set as Shift IO
@@ -151,45 +140,39 @@ int initThrottle()
 {
 	// Coolie Switch 	
 	
-	MapKeyIO(&Throttle, CSU, 
-		ACT_THRUST_FORWARD,
-		ACT_THRUST_UP
-	);
+	MapKey(&Throttle, CSU, ACT_THRUST_UP);
 	
 	MapKey(&Throttle, CSR, ACT_THRUST_RIGHT);
 	
-	MapKeyIO(&Throttle, CSD, 
-		ACT_THRUST_BACKWARD,
-		ACT_THRUST_DOWN
-	);
+	MapKey(&Throttle, CSD, ACT_THRUST_DOWN);
 	
 	MapKey(&Throttle, CSL, ACT_THRUST_LEFT);
 	
 	// Mic Switch 
 	
-	MapKeyUMD(&Throttle, MSU,
-		ACT_TARGET_PREV_SHIP,
-		ACT_TARGET_PREV_SHIP,
-		ACT_TARGET_PREV_HOSTILE 
+	MapKeyIOUMD(&Throttle, MSU, 
+		PULSE+ACT_TARGET_PREV_HOSTILE, PULSE+ACT_TARGET_PREV_SHIP,
+		PULSE+ACT_TARGET_PREV_HOSTILE, PULSE+ACT_TARGET_PREV_SHIP,
+		PULSE+ACT_TARGET_PREV_SHIP,    PULSE+ACT_TARGET_PREV_HOSTILE
 	);
 	
 	MapKeyIO(&Throttle, MSR,
-		ACT_ENGINE_BOOST,
-		ACT_TARGET_AHEAD
+		PULSE+ACT_TARGET_NEXT_MODULE,  PULSE+ACT_TARGET_AHEAD
 	);
 	
-	MapKeyUMD(&Throttle, MSD,
-		ACT_TARGET_NEXT_SHIP,
-		ACT_TARGET_NEXT_SHIP,
-		ACT_TARGET_NEXT_HOSTILE
+	MapKeyIOUMD(&Throttle, MSD,
+		PULSE+ACT_TARGET_NEXT_HOSTILE, PULSE+ACT_TARGET_NEXT_SHIP,
+		PULSE+ACT_TARGET_NEXT_HOSTILE, PULSE+ACT_TARGET_NEXT_SHIP,
+		PULSE+ACT_TARGET_NEXT_SHIP,    PULSE+ACT_TARGET_NEXT_HOSTILE
 	);
 	
-	MapKeyIO(&Throttle, MSL, 
-		ACT_NEXT_SYSTEM_IN_ROUTE,
-		ACT_TARGET_HIGHEST_THREAT
+	MapKeyIO(&Throttle, MSL,
+		PULSE+ACT_TARGET_PREV_MODULE,  PULSE+ACT_TARGET_HIGHEST_THREAT
 	);
 	
-	MapKey(&Throttle, MSP, 0);
+	MapKey(&Throttle, MSP,
+		PULSE+ACT_NEXT_SYSTEM_IN_ROUTE
+	);
 	
 	// Landing Gear Horn Silence Button 
 	MapKey(&Throttle, LDGH, EXEC("resupply();"));
@@ -206,10 +189,7 @@ int initThrottle()
 	
 	// Speed brake 
 	
-	MapKeyIO(&Throttle, SPDB, 
-		ACT_LIGHTS_TOGGLE,
-		ACT_FLIGHT_ASSIST_OFF
-	);
+	MapKey(&Throttle, SPDB, ACT_FLIGHT_ASSIST_OFF);
 	MapKey(&Throttle, SPDF, ACT_FLIGHT_ASSIST_OFF);
 	MapKey(&Throttle, SPDM, 0);
 	
@@ -219,8 +199,8 @@ int initThrottle()
 	MapKey(&Throttle, BSM, PULSE+ACT_UI_BACK);
 	
 	// China Hat 
-	MapKey(&Throttle, CHF, ACT_ORBIT_LINES);
-	MapKey(&Throttle, CHB, ACT_NIGHT_VISION);
+	MapKey(&Throttle, CHF, ACT_THRUST_FORWARD);
+	MapKey(&Throttle, CHB, ACT_THRUST_BACKWARD);
 	MapKey(&Throttle, CHM, 0);
 	
 	// Auto Pilot 
@@ -235,28 +215,28 @@ int initThrottle()
 	MapKey(&Throttle, PSM, EXEC("clearTriggerLock();"));
 	
 	// EAC 
-	MapKey(&Throttle, EACON, ACT_ROTATIONAL_CORRECTION);
-	MapKey(&Throttle, EACOFF, 0);
+	MapKey(&Throttle, EACON,  PULSE+ACT_ORBIT_LINES);
+	MapKey(&Throttle, EACOFF, PULSE+ACT_ORBIT_LINES);
 	
 	// RDR
-	MapKey(&Throttle, RDRNRM, ACT_SILENT_RUNNING);
-	MapKey(&Throttle, RDRDIS, 0);
+	MapKey(&Throttle, RDRNRM, PULSE+ACT_LIGHTS_TOGGLE);
+	MapKey(&Throttle, RDRDIS, PULSE+ACT_LIGHTS_TOGGLE);
 	
 	// APU
-	MapKey(&Throttle, APUON, 0); // Used by Autoscan feature
-	MapKey(&Throttle, APUOFF, 0);// Used by Autoscan feature
+	MapKey(&Throttle, APUON,  EXEC("setAutoscan();"));
+	MapKey(&Throttle, APUOFF, EXEC("setAutoscan();"));
 	
 	// ENG OPER 
 	MapKey(&Throttle, EOLMOTOR, 0);
-	MapKey(&Throttle, EOLIGN, 0);
+	MapKey(&Throttle, EOLIGN, PULSE+ACT_NIGHT_VISION);
 	MapKey(&Throttle, EOLNORM, 0);
 	MapKey(&Throttle, EORMOTOR, 0);
 	MapKey(&Throttle, EORIGN, 0);
 	MapKey(&Throttle, EORNORM, 0);
 	
 	// FUEL
-	MapKey(&Throttle, EFLNORM, 0);
-	MapKey(&Throttle, EFRNORM, 0);
+	MapKey(&Throttle, EFLNORM, ACT_ROTATIONAL_CORRECTION);
+	MapKey(&Throttle, EFRNORM, ACT_SILENT_RUNNING);
 	MapKey(&Throttle, EFLOVER, 0);
 	MapKey(&Throttle, EFROVER, 0);
 	

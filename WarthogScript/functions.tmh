@@ -1,19 +1,9 @@
-int fireTriggerOne()
+int fireTriggerOne() 
 {
-	if (Throttle[PSB] & Throttle[APPAT] | Joystick[S4] | lockPrimaryFire)
+	if (Throttle[PSB] & Throttle[APPAT] | lockPrimaryFire) 
 	{
-		
 		lockPrimaryFire = !lockPrimaryFire;
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Trigger one on (locked) = %d\xa", lockPrimaryFire);
-		}
-	} else {
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Trigger one on\xa");
-		}
-	}
+	} 
 	
 	ActKey(KEYON+DOWN+ACT_PRIMARY_FIRE);
 }
@@ -23,51 +13,28 @@ int releaseTriggerOne()
 	if (!lockPrimaryFire)
 	{
 		ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
-		
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Trigger one off\xa");
-		}
 	}
 }
 
 int fireTriggerTwo() 
 {
-	if (Throttle[PSB] & Throttle[APALT])
+	if (Throttle[PSB] & Throttle[APALT]) 
 	{
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Secondary Trigger On\xa");
-		}
 		ActKey(KEYON+DOWN+ACT_SECONDARY_FIRE);
 	}
 }
 
 int releaseTriggerTwo() 
 {
-	if (!Joystick[S2] & !(Throttle[PSB] & Throttle[SC]))
-	{
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Secondary Trigger Off\xa");
-		}
+	if (!Joystick[S2] & !(Throttle[PSB] & Throttle[SC])) {
 		ActKey(KEYON+UP+ACT_SECONDARY_FIRE);
 	}
 }
 
 int clearTriggerLock()
 {
-	if (DEBUG_TRIGGER_ACTION)
-	{
-		printf("Clearing any lock\xa");
-	}
 	if (lockPrimaryFire)
 	{
-		if (DEBUG_TRIGGER_ACTION)
-		{
-			printf("Resetting Primary Fire Lock\xa");
-		}
-		
 		lockPrimaryFire = 0;
 		ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
 	}
@@ -80,35 +47,23 @@ int EDStatusFlagsCallback(int data, int size)
 	Map(&data, data);
 	
 	currentGameStatus = data;
-	
-	if (DEBUG_API_CALL)
-	{
-		printf("Data Value Receieved = %d\xa", currentGameStatus);
-		printf("Previous Data Value  = %d\xa", previousGameStatus);
-	}
-	
-	//
-	// Autoscan system when jumping in.  
-	// 
-	if (flag(FLAG_HUD_ANALYSIS_MODE) & flagDown(FLAG_FSD_JUMP) & Throttle[APUON])
-	{
-		 
-		if (DEBUG_AUTO_SCAN) {
-			printf("Starting system scan..\xa");
-		}
 
+	// Autoscan system when jumping in.  
+	if (flag(FLAG_HUD_ANALYSIS_MODE) & flagDown(FLAG_FSD_JUMP) & Throttle[APUON]) 
+	{
 		DeferCall(DELAY_WAIT, &ActKey, KEYON+DOWN+ACT_PRIMARY_FIRE);
 		DeferCall(DELAY_WAIT+DELAY_SYSTEM_SCAN, &ActKey, KEYON+UP+ACT_PRIMARY_FIRE);
 	}
 	
-	SetLedState(LED1, flag(FLAG_HARDPOINTS_DEPLOYED));
-	SetLedState(LED2, flag(FLAG_CARGO_SCOOP_DEPLOYED));
-	SetLedState(LED3, flag(FLAG_LANDING_GEAR_DOWN));
-	
-	SetLedState(LED5, flag(FLAG_OVER_HEATING));
+	setLedState(LED1, flag(FLAG_HARDPOINTS_DEPLOYED));
+	setLedState(LED2, flag(FLAG_CARGO_SCOOP_DEPLOYED));
+	setLedState(LED3, flag(FLAG_LANDING_GEAR_DOWN));
+	setLedState(LED4, Throttle[APUON] & flag(FLAG_HUD_ANALYSIS_MODE));
+	setLedState(LED5, flag(FLAG_OVER_HEATING));
 }
 
-int flag(int flags){
+int flag(int flags)
+{
 	return (currentGameStatus & flags) == flags;
 }
 
@@ -117,34 +72,45 @@ int previousFlag(int flags)
 	return (previousGameStatus & flags) == flags;
 }
 
-int flagDown(int flags) {
+int flagDown(int flags) 
+{
 	return !flag(flags) & previousFlag(flags);
 }
 
-int flagUp(int flags) {
+int flagUp(int flags) 
+{
 	return flag(flags) & !previousFlag(flags);
 }
 
-int SetLedState(int led, int state)
+int setAutoscan()
+{
+	setLedState(LED4, Throttle[APUON] & flag(FLAG_HUD_ANALYSIS_MODE));
+}
+
+int setLedState(int led, int state) 
 {
 	if (state) 
 	{
 		ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+led));
-	} else 
+	}
+	else 
 	{
 		ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-led));
 	}
 }
-int setPipConfig(int pip1=0, int pip2=0, int pip3=0, int pip4=0)
+
+int setPipConfig(int pip1=0, int pip2=0, int pip3=0, int pip4=0) 
 {
-	if (pip3 == 0)
+	if (!pip3) 
 	{
 		ActKey(KEYON+CHAIN(
 			PULSE+ACT_PIP_RESET, D(),
 			PULSE+pip1, D(),
 			PULSE+pip2
 		));
-	} else {
+	} 
+	else 
+	{
 		ActKey(KEYON+CHAIN(
 			PULSE+ACT_PIP_RESET, D(),
 			PULSE+pip1, D(),
@@ -155,27 +121,26 @@ int setPipConfig(int pip1=0, int pip2=0, int pip3=0, int pip4=0)
 	}
 }
 
-
-int setJoystickCurve(int profile)
+int setJoystickCurve(int profile) 
 {
 	SetSCurve(&Joystick, JOYX, 0, 0, 0, JOY_CURVE[profile], JOY_ZOOM[profile]);
 	SetSCurve(&Joystick, JOYY, 0, 0, 0, JOY_CURVE[profile], JOY_ZOOM[profile]);
 }
 
-int resupply()
+int resupply() 
 {
 	ActKey(KEYON+CHAIN(
-		PULSE+ACT_UI_SELECT, D(),
-		PULSE+ACT_UI_RIGHT, D(),
-		PULSE+ACT_UI_SELECT, D(),
-		PULSE+ACT_UI_RIGHT, D(),
-		PULSE+ACT_UI_SELECT, D(),
-		PULSE+ACT_UI_LEFT, D(),
+		PULSE+ACT_UI_SELECT, D(DELAY_SMALL),
+		PULSE+ACT_UI_RIGHT,  D(DELAY_SMALL),
+		PULSE+ACT_UI_SELECT, D(DELAY_SMALL),
+		PULSE+ACT_UI_RIGHT,  D(DELAY_SMALL),
+		PULSE+ACT_UI_SELECT, D(DELAY_SMALL),
+		PULSE+ACT_UI_LEFT,   D(DELAY_SMALL),
 		PULSE+ACT_UI_LEFT
 	));
 }
 
-int stowAndSupercruise()
+int stowAndSupercruise() 
 {
 	clearTriggerLock();
 
@@ -183,19 +148,19 @@ int stowAndSupercruise()
 	{
 		ActKey(KEYON+PULSE+ACT_HARDPOINTS);
 	}
-
+	
 	if (flag(FLAG_CARGO_SCOOP_DEPLOYED))
 	{
 		ActKey(KEYON+PULSE+ACT_CARGO_SCOOP);
 	}
-
+	
 	if (flag(FLAG_LANDING_GEAR_DOWN))
 	{
 		ActKey(KEYON+PULSE+ACT_LANDING_GEAR);
 	}
-
-    ActKey(KEYON+CHAIN(
-        D(), PULSE+ACT_ENGINE_BOOST, 
-        D(), PULSE+ACT_SUPERCRUISE_TOGGLE 
-    ));
+	
+  ActKey(KEYON+CHAIN(
+		D(), PULSE+ACT_ENGINE_BOOST, 
+		D(), PULSE+ACT_SUPERCRUISE
+  ));
 }

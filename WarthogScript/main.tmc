@@ -6,16 +6,19 @@ include "bindings.tmh"
 
 int main()
 {
-    if(Init(&EventHandle)) 
-    {
-    	return 1; // declare the event handler, return on error
-    }
+	if(Init(&EventHandle)) 
+  {
+  	return 1; // declare the event handler, return on error
+  }
 	
 	// EDStatusFlagClient.exe will post status flag
 	// changes to port 1000 on local machine.
 	// Pass to the EDStatusFlagsCallback function for 
 	// processing.  
 	RegisterGameCallback(1000, &EDStatusFlagsCallback);
+	
+	// Set Default delays
+	SetKBRate(DELAY_PULSE, DELAY_DEFAULT);
 	
 	// Modifier Settings 
 	SetShiftButton(&Joystick, S4, &Throttle, PSF, PSB);
@@ -24,12 +27,19 @@ int main()
 	initAxis();
 	initJoystick();
 	initThrottle();
+	
+	// Ensure curve is initialised
+	if (Throttle[FLAPU]) EXEC("setJoystickCurve(0);");
+	else if (Throttle[FLAPM]) EXEC("setJoystickCurve(1);");
+	else EXEC("setJoystickCurve(2);");
+	
+	// Set LED intensity
+	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 44));
 }
 
 int EventHandle(int type, alias o, int x)
 {
-    DefaultMapping(&o, x);
-	
+	DefaultMapping(&o, x);
 	//add event handling code here
 }
 
