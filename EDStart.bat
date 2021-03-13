@@ -1,7 +1,7 @@
 SET TARGET-GUI-PATH="%PROGRAMFILES(X86)%\Thrustmaster\TARGET\x64"
 SET TARGET-SCRIPT-FILE="D:\Code\Danny\GitHub\ED-Warthog\WarthogScript\main.tmc"
 SET ED-DISCOVERY-PATH="C:\Program Files\EDDiscovery"
-SET ED-STATUS-CLIENT-PATH="D:\Code\Danny\GitHub\ED-Warthog\EDStatusFlagsClient\bin\Debug\netcoreapp3.1"
+SET ED-STATUS-CLIENT-PATH="D:\Code\Danny\GitHub\ED-Warthog\EDStatusFlagsClient\bin\release\netcoreapp3.1"
 
 ECHO OFF
 
