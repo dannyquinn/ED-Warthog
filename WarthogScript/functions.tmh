@@ -140,7 +140,7 @@ int resupply()
 	));
 }
 
-int stowAndSupercruise() 
+int stowAndSupercruise(int supercruise) 
 {
 	clearTriggerLock();
 
@@ -159,8 +159,8 @@ int stowAndSupercruise()
 		ActKey(KEYON+PULSE+ACT_LANDING_GEAR);
 	}
 	
-  ActKey(KEYON+CHAIN(
-		D(), PULSE+ACT_ENGINE_BOOST, 
-		D(), PULSE+ACT_SUPERCRUISE
-  ));
+  ActKey(KEYON+CHAIN(D(), PULSE+ACT_ENGINE_BOOST));
+  
+  if (supercruise) ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE_TOGGLE));
+  else ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE));
 }

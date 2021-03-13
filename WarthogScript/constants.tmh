@@ -1,4 +1,4 @@
-define DELAY_PIPS                   333
+define DELAY_TEMPO                  333
 define DELAY_WAIT                   1000
 define DELAY_SYSTEM_SCAN            6500
 define DELAY_PULSE                  25
