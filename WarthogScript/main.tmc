@@ -2,7 +2,8 @@ include "target.tmh"
 include "constants.tmh"
 include "functions.tmh"
 include "variables.tmh"
-include "bindings.tmh"
+include "joystick.tmh"
+include "throttle.tmh"
 
 int main()
 {
@@ -24,7 +25,6 @@ int main()
 	SetShiftButton(&Joystick, S4, &Throttle, PSF, PSB);
 	
 	// Map Axes & Buttons 
-	initAxis();
 	initJoystick();
 	initThrottle();
 	
@@ -35,6 +35,9 @@ int main()
 	
 	// Set LED intensity
 	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 44));
+	
+	// Set Slider 
+	mapSlider();
 }
 
 int EventHandle(int type, alias o, int x)

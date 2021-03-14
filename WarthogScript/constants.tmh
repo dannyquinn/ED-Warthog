@@ -92,6 +92,9 @@ define ACT_TARGET_NEXT_MODULE       DX28
 define ACT_CHAFF                    DX29
 define ACT_ECM                      DX30
 
+define ACT_SRV_TURRET               DX31
+define ACT_SRV_BOOST                DX32
+
 define ACT_PREV_FIRE_GROUP          F1 
 define ACT_NEXT_FIRE_GROUP          F2 
 define ACT_TARGET_NEXT_HOSTILE      F3

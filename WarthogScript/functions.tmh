@@ -1,3 +1,15 @@
+int mapSlider()
+{
+	if (Throttle[EACON])
+	{ 
+		MapAxis(&Throttle, THR_FC, DX_THROTTLE_AXIS); 
+	}
+	else 
+	{
+		MapAxis(&Throttle, THR_FC, DX_SLIDER_AXIS);
+	}
+}
+
 int fireTriggerOne() 
 {
 	if (Throttle[PSB] & Throttle[APPAT] | lockPrimaryFire) 
@@ -26,7 +38,8 @@ int fireTriggerTwo()
 
 int releaseTriggerTwo() 
 {
-	if (!Joystick[S2] & !(Throttle[PSB] & Throttle[SC])) {
+	if (!Joystick[S2] & !(Throttle[PSB] & Throttle[SC])) 
+	{
 		ActKey(KEYON+UP+ACT_SECONDARY_FIRE);
 	}
 }
@@ -143,6 +156,7 @@ int resupply()
 int stowAndSupercruise(int supercruise) 
 {
 	clearTriggerLock();
+	setPipConfig(ENG, SYS, ENG, ENG);
 
 	if (flag(FLAG_HARDPOINTS_DEPLOYED))
 	{
@@ -161,6 +175,12 @@ int stowAndSupercruise(int supercruise)
 	
   ActKey(KEYON+CHAIN(D(), PULSE+ACT_ENGINE_BOOST));
   
-  if (supercruise) ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE_TOGGLE));
-  else ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE));
+  if (supercruise) 
+  {
+  	ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE_TOGGLE));
+  }
+  else 
+  {
+  	ActKey(KEYON+CHAIN(D(), PULSE+ACT_SUPERCRUISE));
+  }
 }

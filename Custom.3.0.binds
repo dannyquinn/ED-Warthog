@@ -759,7 +759,7 @@
 		<Secondary Device="{NoDevice}" Key="" />
 	</BuggyPitchDownButton>
 	<VerticalThrustersButton>
-		<Primary Device="Keyboard" Key="Key_LeftShift" />
+		<Primary Device="ThrustMasterWarthogCombined" Key="Joy_32" />
 		<Secondary Device="{NoDevice}" Key="" />
 		<ToggleOn Value="0" />
 	</VerticalThrustersButton>
@@ -768,7 +768,7 @@
 		<Secondary Device="Mouse" Key="Mouse_1" />
 	</BuggyPrimaryFireButton>
 	<BuggySecondaryFireButton>
-		<Primary Device="Keyboard" Key="Key_T" />
+		<Primary Device="ThrustMasterWarthogCombined" Key="Joy_2" />
 		<Secondary Device="Mouse" Key="Mouse_2" />
 	</BuggySecondaryFireButton>
 	<AutoBreakBuggyButton>
@@ -781,7 +781,7 @@
 		<Secondary Device="{NoDevice}" Key="" />
 	</HeadlightsBuggyButton>
 	<ToggleBuggyTurretButton>
-		<Primary Device="ThrustMasterWarthogCombined" Key="Joy_2" />
+		<Primary Device="ThrustMasterWarthogCombined" Key="Joy_31" />
 		<Secondary Device="{NoDevice}" Key="" />
 	</ToggleBuggyTurretButton>
 	<BuggyCycleFireGroupNext>
@@ -794,7 +794,7 @@
 	</BuggyCycleFireGroupPrevious>
 	<SelectTarget_Buggy>
 		<Primary Device="Keyboard" Key="Key_E" />
-		<Secondary Device="{NoDevice}" Key="" />
+		<Secondary Device="Keyboard" Key="Key_Enter" />
 	</SelectTarget_Buggy>
 	<MouseTurretXMode Value="Bindings_MouseYaw" />
 	<MouseTurretXDecay Value="1" />
@@ -830,11 +830,11 @@
 	<BuggyTurretMouseDeadzone Value="0.05000000" />
 	<BuggyTurretMouseLinearity Value="1.00000000" />
 	<DriveSpeedAxis>
-		<Binding Device="ThrustMasterWarthogCombined" Key="Joy_ZAxis" />
+		<Binding Device="ThrustMasterWarthogCombined" Key="Joy_UAxis" />
 		<Inverted Value="1" />
 		<Deadzone Value="0.00000000" />
 	</DriveSpeedAxis>
-	<BuggyThrottleRange Value="Bindings_BuggyThrottleForewardOnly" />
+	<BuggyThrottleRange Value="" />
 	<BuggyToggleReverseThrottleInput>
 		<Primary Device="ThrustMasterWarthogCombined" Key="Joy_15" />
 		<Secondary Device="{NoDevice}" Key="" />
