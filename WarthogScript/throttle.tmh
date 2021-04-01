@@ -10,61 +10,66 @@ int initThrottle()
 	
 	// Coolie Switch 	
 	
-	MapKeyIO(&Throttle, CSU, 
-		PULSE+ACT_LIGHTS_TOGGLE,
-		ACT_THRUST_UP
+	MapKey(&Throttle, CSU, 
+		ACT_THRUSTERS_UP
 	);
 	
-	MapKeyIO(&Throttle, CSR, 
-		PULSE+ACT_ORBIT_LINES,
-		ACT_THRUST_RIGHT
+	MapKey(&Throttle, CSR, 
+		ACT_THRUSTERS_RIGHT
 	);
 	
-	MapKey(&Throttle, CSD, ACT_THRUST_DOWN);
+	MapKey(&Throttle, CSD, 
+		ACT_THRUSTERS_DOWN
+	);
 	
 	MapKey(&Throttle, CSL, 
-		PULSE+ACT_NIGHT_VISION,
-		ACT_THRUST_LEFT
+		ACT_THRUSTERS_LEFT
 	);
 	
 	// Mic Switch 
 	
-	MapKeyIOUMD(&Throttle, MSU, 
-		PULSE+ACT_TARGET_PREV_HOSTILE, PULSE+ACT_TARGET_PREV_SHIP,
-		PULSE+ACT_TARGET_PREV_HOSTILE, PULSE+ACT_TARGET_PREV_SHIP,
-		PULSE+ACT_TARGET_PREV_SHIP,    PULSE+ACT_TARGET_PREV_HOSTILE
+	MapKeyUMD(&Throttle, MSU, 
+    CHAIN(
+      PULSE+ACT_ENGINE_STOP, D(),
+      PULSE+ACT_FSS
+    ),
+    0,
+		EXEC("latchTriggerTwo();")
 	);
 	
-	MapKeyIO(&Throttle, MSR,
-		PULSE+ACT_TARGET_NEXT_MODULE,  PULSE+ACT_TARGET_AHEAD
+	MapKey(&Throttle, MSR,
+    TEMPO(
+			PULSE+ACT_UI_NEXT_TAB,
+			PULSE+ACT_TARGET_HIGHEST_THREAT,
+			DELAY_TEMPO
+		)
 	);
 	
-	MapKeyIOUMD(&Throttle, MSD,
-		PULSE+ACT_TARGET_NEXT_HOSTILE, PULSE+ACT_TARGET_NEXT_SHIP,
-		PULSE+ACT_TARGET_NEXT_HOSTILE, PULSE+ACT_TARGET_NEXT_SHIP,
-		PULSE+ACT_TARGET_NEXT_SHIP,    PULSE+ACT_TARGET_NEXT_HOSTILE
+	MapKeyUMD(&Throttle, MSD,
+    CHAIN(
+      PULSE+ACT_FSS, D(DELAY_WAIT*2),
+      PULSE+ACT_FSD
+    ),
+    0,
+		EXEC("latchTriggerOne();")
+  );
+	
+	MapKey(&Throttle, MSL,
+		PULSE+ACT_UI_PREV_TAB
 	);
 	
-	MapKeyIO(&Throttle, MSL,
-		PULSE+ACT_TARGET_PREV_MODULE,  PULSE+ACT_TARGET_HIGHEST_THREAT
-	);
-	
-	MapKey(&Throttle, MSP,
-		PULSE+ACT_NEXT_SYSTEM_IN_ROUTE
+	MapKey(&Throttle, MSP, 
+		0
 	);
 	
 	// Landing Gear Horn Silence Button 
 	MapKey(&Throttle, LDGH, EXEC("resupply();"));
 	
 	// Left Throttle Button
-	MapKey(&Throttle, LTB, PULSE+ACT_THROTTLE_REVERSE_TOGGLE);
+	MapKey(&Throttle, LTB, 0);
 	
 	// Slew Control 
-	MapKeyUMD(&Throttle, SC,
-		ACT_HEADLOOK,
-		ACT_HEADLOOK,
-		ACT_SECONDARY_FIRE
-	);
+	MapKeyUMD(&Throttle, SC, ACT_HEADLOOK,ACT_HEADLOOK,ACT_SECONDARY_FIRE);
 	
 	// Speed brake 
 	
@@ -73,15 +78,16 @@ int initThrottle()
 	MapKey(&Throttle, SPDM, 0);
 	
 	// Boat Switch 
-	MapKey(&Throttle, BSF, PULSE+ACT_GALAXY_MAP);
-	MapKey(&Throttle, BSB, PULSE+ACT_SYSTEM_MAP);
-	MapKey(&Throttle, BSM, PULSE+ACT_UI_BACK);
+	MapKey(&Throttle, BSF, 0); // Primary Fire Latch
+	MapKey(&Throttle, BSB, 0); // Dual Trigger Fire
+	MapKey(&Throttle, BSM, EXEC("clearTriggerLock();"));
 	
 	// China Hat 
-	MapKey(&Throttle, CHF, ACT_THRUST_FORWARD);
-	MapKey(&Throttle, CHB, ACT_THRUST_BACKWARD);
+	MapKey(&Throttle, CHF, PULSE+ACT_GALAXY_MAP);
+	MapKey(&Throttle, CHB, PULSE+ACT_SYSTEM_MAP);
 	MapKey(&Throttle, CHM, 0);
-	
+
+
 	// Auto Pilot 
 	MapKey(&Throttle, APENG, TEMPO(
 		EXEC("stowAndSupercruise(0);"),
@@ -89,26 +95,26 @@ int initThrottle()
 		DELAY_TEMPO
 	));
 	
-	MapKey(&Throttle, APAH, EXEC("clearTriggerLock();"));
-	MapKey(&Throttle, APPAT, 0); // Used by fireTrigger functions
-	MapKey(&Throttle, APALT, 0); // Used by fireTrigger functions
+	MapKey(&Throttle, APAH, 0);
+	MapKey(&Throttle, APPAT, 0); 
+	MapKey(&Throttle, APALT, 0); 
 	
 	// Pinky Switch 
-	MapKey(&Throttle, PSF, 0); // DO NOT USE - Up Layer
-	MapKey(&Throttle, PSB, 0); // DO NOT USE - Down Layer
-	MapKey(&Throttle, PSM, EXEC("clearTriggerLock();"));
+	MapKey(&Throttle, PSF, 0); 
+	MapKey(&Throttle, PSB, 0); 
+	MapKey(&Throttle, PSM, 0);
 	
 	// EAC 
 	MapKey(&Throttle, EACON,  EXEC("mapSlider();")); 
 	MapKey(&Throttle, EACOFF, EXEC("mapSlider();")); 
 	
 	// RDR
-	MapKey(&Throttle, RDRNRM, 0); 
-	MapKey(&Throttle, RDRDIS, 0); 
+	MapKey(&Throttle, RDRNRM, EXEC("setAutoscan();")); 
+	MapKey(&Throttle, RDRDIS, EXEC("setAutoscan();")); 
 	
 	// APU
-	MapKey(&Throttle, APUON,  EXEC("setAutoscan();"));
-	MapKey(&Throttle, APUOFF, EXEC("setAutoscan();"));
+	MapKey(&Throttle, APUON,  0);
+	MapKey(&Throttle, APUOFF, 0);
 		
 	// ENG OPER 
 	MapKey(&Throttle, EOLMOTOR, 0);

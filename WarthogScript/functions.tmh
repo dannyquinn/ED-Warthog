@@ -12,7 +12,7 @@ int mapSlider()
 
 int fireTriggerOne() 
 {
-	if (Throttle[PSB] & Throttle[APPAT] | lockPrimaryFire) 
+	if (Throttle[BSF] | lockPrimaryFire) 
 	{
 		lockPrimaryFire = !lockPrimaryFire;
 	} 
@@ -30,7 +30,7 @@ int releaseTriggerOne()
 
 int fireTriggerTwo() 
 {
-	if (Throttle[PSB] & Throttle[APALT]) 
+	if (Throttle[BSB]) 
 	{
 		ActKey(KEYON+DOWN+ACT_SECONDARY_FIRE);
 	}
@@ -44,12 +44,45 @@ int releaseTriggerTwo()
 	}
 }
 
+int latchTriggerOne()
+{
+  lockPrimaryFire = !lockPrimaryFire;
+  
+  if (lockPrimaryFire) 
+  {
+    ActKey(KEYON+DOWN+ACT_PRIMARY_FIRE);
+  }
+  else 
+  {
+    ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
+  }
+}
+
+int latchTriggerTwo()
+{
+  lockSecondaryFire = !lockSecondaryFire;
+  
+  if (lockSecondaryFire)
+  {
+    ActKey(KEYON+DOWN+ACT_SECONDARY_FIRE);
+  }
+  else 
+  {
+    ActKey(KEYON+UP+ACT_SECONDARY_FIRE);
+  }
+}
+
 int clearTriggerLock()
 {
 	if (lockPrimaryFire)
 	{
 		lockPrimaryFire = 0;
 		ActKey(KEYON+UP+ACT_PRIMARY_FIRE);
+	}
+	if (lockSecondaryFire)
+	{
+    lockSecondaryFire = 0;
+    ActKey(KEYON+UP+ACT_SECONDARY_FIRE);
 	}
 }
 
@@ -62,7 +95,7 @@ int EDStatusFlagsCallback(int data, int size)
 	currentGameStatus = data;
 
 	// Autoscan system when jumping in.  
-	if (flag(FLAG_HUD_ANALYSIS_MODE) & flagDown(FLAG_FSD_JUMP) & Throttle[APUON]) 
+	if (flag(FLAG_HUD_ANALYSIS_MODE) & flagDown(FLAG_FSD_JUMP) & Throttle[RDRNRM]) 
 	{
 		DeferCall(DELAY_WAIT, &ActKey, KEYON+DOWN+ACT_PRIMARY_FIRE);
 		DeferCall(DELAY_WAIT+DELAY_SYSTEM_SCAN, &ActKey, KEYON+UP+ACT_PRIMARY_FIRE);

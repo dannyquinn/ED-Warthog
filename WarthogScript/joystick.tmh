@@ -4,99 +4,127 @@ int initJoystick()
 	MapAxis(&Joystick, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
 	
 	// Trim Hat
-	MapKey(&Joystick, H1U, ACT_PITCH_DOWN);
+	MapKeyIO(&Joystick, H1U, 
+		TEMPO(
+		  ACT_PIP_ENGINE, 
+		  EXEC("setPipConfig(SYS, ENG, ENG, ENG);"), 
+		  DELAY_TEMPO
+		),
+		ACT_PITCH_DOWN
+	);
 	
-	MapKey(&Joystick, H1R, ACT_YAW_RIGHT);
+	MapKeyIO(&Joystick, H1R, 
+		TEMPO(
+		  ACT_PIP_WEAPON, 
+		  EXEC("setPipConfig(WEP, WEP);"), 
+		  DELAY_TEMPO
+		),
+		ACT_YAW_RIGHT
+	);
 	
-	MapKey(&Joystick, H1D, ACT_PITCH_UP);
+	MapKeyIO(&Joystick, H1D, 
+		TEMPO(
+		  ACT_PIP_RESET, 
+		  EXEC("setPipConfig(WEP, SYS);"), 
+		  DELAY_TEMPO
+		),
+		ACT_PITCH_UP
+	);
 	
-	MapKey(&Joystick, H1L, ACT_YAW_LEFT);
+	MapKeyIO(&Joystick, H1L, 
+		TEMPO(
+		  ACT_PIP_SYSTEM, 
+		  EXEC("setPipConfig(ENG, SYS, SYS, SYS);"), 
+		  DELAY_TEMPO
+		),
+		ACT_YAW_LEFT
+	);
 
 	// TMS 4-Way 
 
 	MapKeyIO(&Joystick, H2U, 
-		ACT_SHIELD_BANK,
-		ACT_PANEL_COMMS
+		PULSE+ACT_LANDING_GEAR,
+		PULSE+ACT_PANEL_COMMS
 	);
 	
 	MapKeyIO(&Joystick, H2R, 
-		ACT_CHAFF,
-		ACT_PANEL_INTERNAL
+		PULSE+ACT_NEXT_FIRE_GROUP,
+		PULSE+ACT_PANEL_INTERNAL
 	);
 	
 	MapKeyIO(&Joystick, H2D, 
-		ACT_HEATSINK,
-		ACT_PANEL_ROLE
+		PULSE+ACT_CARGO_SCOOP,
+		PULSE+ACT_PANEL_ROLE
 	);
 	
 	MapKeyIO(&Joystick, H2L, 
-		ACT_ECM,
-		ACT_PANEL_EXTERNAL
+		PULSE+ACT_PREV_FIRE_GROUP,
+		PULSE+ACT_PANEL_EXTERNAL
 	);
 
 	// DMS 4-Way
-	MapKeyIOUMD(&Joystick, H3U,
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, ENG);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, ENG);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, ENG);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, ENG);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS, ENG, SYS);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_ENGINE, EXEC("setPipConfig(ENG, SYS);"),           DELAY_TEMPO)
+	MapKeyIO(&Joystick, H3U, 
+		PULSE+ACT_LIGHTS,		
+		TEMPO(
+			PULSE+ACT_FSD, 
+			PULSE+ACT_SUPERCRUISE, 
+			DELAY_TEMPO
+		)
 	);
 	
-	MapKeyIOUMD(&Joystick, H3R, 
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, WEP);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, SYS, WEP, WEP);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, WEP);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, SYS, WEP, WEP);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, ENG, WEP, ENG);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_WEAPON, EXEC("setPipConfig(WEP, ENG);"),           DELAY_TEMPO)
+	MapKeyIO(&Joystick, H3R, 
+		PULSE+ACT_NIGHT_VISION,
+		TEMPO(
+			PULSE+ACT_ENGINE_INCREASE, 
+			PULSE+ACT_ENGINE_FULL, 
+			DELAY_TEMPO
+		)
+	);
+
+	MapKeyIO(&Joystick, H3D, 
+		CHAIN(
+		  EXEC("clearTriggerLock();"),
+		  PULSE+ACT_HARDPOINTS
+		),
+		PULSE+ACT_ENGINE_BOOST
 	);
 	
-	MapKey(&Joystick, H3D, PULSE+ACT_PIP_RESET);
-	
-	MapKeyIOUMD(&Joystick, H3L,
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, SYS);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, SYS);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, SYS);"),           DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, SYS);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP, SYS, WEP);"), DELAY_TEMPO),
-		TEMPO(PULSE+ACT_PIP_SYSTEM, EXEC("setPipConfig(SYS, WEP);"),           DELAY_TEMPO)
+	MapKeyIO(&Joystick, H3L, 
+		PULSE+ACT_ORBIT_LINES,
+		TEMPO(
+			PULSE+ACT_ENGINE_DECREASE, 
+			PULSE+ACT_ENGINE_STOP, 
+			DELAY_TEMPO
+		)
 	);
 
 	// CMS 4-Way w. push button
-	MapKeyIO(&Joystick, H4U,
-		ACT_LANDING_GEAR,
-		ACT_UI_UP // Bound to boost as well
+	MapKeyIO(&Joystick, H4U, 
+		ACT_USE_SHEILD_CELL,
+		ACT_UI_UP 
 	);
 	
-	MapKeyIO(&Joystick, H4R,
-		CHAIN(
+	MapKeyIO(&Joystick, H4R, 
+		PULSE+ACT_USE_ECM, 
+		ACT_UI_RIGHT
+	);
+	
+	MapKeyIO(&Joystick, H4D, 
+		PULSE+ACT_USE_HEAT_SINK,
+		ACT_UI_DOWN
+	);
+	
+	MapKeyIO(&Joystick, H4L, 
+		PULSE+ACT_USE_CHAFF,
+		ACT_UI_LEFT
+	);
+	
+	MapKeyIO(&Joystick, H4P, 
+	 CHAIN(
 			EXEC("clearTriggerLock();"),
-			ACT_NEXT_FIRE_GROUP
-		),	
-		ACT_UI_RIGHT // Bound to supercruise as well
-	);
-	
-	MapKeyIO(&Joystick, H4D,
-		ACT_CARGO_SCOOP,
-		ACT_UI_DOWN // Bound to supercruise toggle as well
-	);
-	
-	MapKeyIO(&Joystick, H4L,
-		CHAIN(
-			EXEC("clearTriggerLock();"),
-			ACT_PREV_FIRE_GROUP 
-		),
-		ACT_UI_LEFT // Bound to 75% engines as well
-	);
-	
-	MapKeyIO(&Joystick, H4P,
-		CHAIN(
-			EXEC("clearTriggerLock();"),
-			ACT_HUD_MODE
-		),
-		ACT_UI_SELECT 
+			PULSE+ACT_HUD_MODE
+   ),
+	 PULSE+ACT_UI_SELECT
 	);
 	
 	// Trigger 
@@ -108,16 +136,13 @@ int initJoystick()
 	
 	// Weapon Release
 	
-	MapKeyIO(&Joystick, S2, 
-		ACT_HARDPOINTS,
-		ACT_SECONDARY_FIRE
-	);
+	MapKey(&Joystick, S2, ACT_SECONDARY_FIRE);
 	
 	// MMC Button 
 	MapKey(&Joystick, S1, PULSE+ACT_UI_BACK);
 	
 	// NWS Button 
-	MapKey(&Joystick, S3, 0);
+	MapKey(&Joystick, S3, PULSE+ACT_LIGHTS);
 	
 	// Pinkie Lever 
 	MapKey(&Joystick, S4, 0); // DO NOT USE - Set as Shift IO

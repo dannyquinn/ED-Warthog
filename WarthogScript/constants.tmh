@@ -47,91 +47,82 @@ define FLAG_SRV_HIGH_BEAM           1 << 31
 	Button Actions 
 */
 
+
 define ACT_PITCH_UP                 DXHATDOWN
 define ACT_PITCH_DOWN               DXHATUP
 define ACT_YAW_LEFT                 DXHATLEFT 
 define ACT_YAW_RIGHT                DXHATRIGHT
 
-// 32 DX Buttons available
-define ACT_PRIMARY_FIRE             DX1 
-define ACT_SECONDARY_FIRE           DX2 
+define ACT_PIP_ENGINE               DX1
+define ACT_PIP_WEAPON               DX2
+define ACT_PIP_RESET                DX3
+define ACT_PIP_SYSTEM               DX4
 
-define ACT_HEADLOOK                 DX3
-define ACT_FLIGHT_ASSIST_OFF        DX4
-define ACT_SHIELD_BANK              DX5
-define ACT_HEATSINK                 DX6
+define ACT_PANEL_COMMS              UARROW
+define ACT_PANEL_INTERNAL           RARROW
+define ACT_PANEL_ROLE               DARROW
+define ACT_PANEL_EXTERNAL           LARROW
 
-define ACT_PANEL_COMMS              DX7 
-define ACT_PANEL_INTERNAL           DX8
-define ACT_PANEL_ROLE               DX9
-define ACT_PANEL_EXTERNAL           DX10
-
-define ACT_PIP_ENGINE               DX11
-define ACT_PIP_WEAPON               DX12 
-define ACT_PIP_RESET                DX13 
-define ACT_PIP_SYSTEM               DX14
-
-define ACT_THROTTLE_REVERSE_TOGGLE  DX15
-define ACT_THRUST_UP                DX16
-define ACT_THRUST_RIGHT             DX17 
-define ACT_THRUST_DOWN              DX18 
-define ACT_THRUST_LEFT              DX19 
-define ACT_THRUST_FORWARD           DX20
-define ACT_THRUST_BACKWARD          DX21
-
-define ACT_LIGHTS_TOGGLE            DX22
-
-define ACT_TARGET_NEXT_SHIP         DX23
-define ACT_TARGET_PREV_SHIP         DX24
-
-define ACT_SILENT_RUNNING           DX25
-define ACT_ROTATIONAL_CORRECTION    DX26
-
-define ACT_TARGET_PREV_MODULE       DX27
-define ACT_TARGET_NEXT_MODULE       DX28
-define ACT_CHAFF                    DX29
-define ACT_ECM                      DX30
-
-define ACT_SRV_TURRET               DX31
-define ACT_SRV_BOOST                DX32
-
-define ACT_PREV_FIRE_GROUP          F1 
-define ACT_NEXT_FIRE_GROUP          F2 
-define ACT_TARGET_NEXT_HOSTILE      F3
-define ACT_TARGET_PREV_HOSTILE      F4
-define ACT_NEXT_SYSTEM_IN_ROUTE     F5
-
-define ACT_GALAXY_MAP               'f'
-define ACT_SYSTEM_MAP               'g'
+define ACT_LANDING_GEAR             HOME
+define ACT_CARGO_SCOOP              END
+define ACT_NEXT_FIRE_GROUP          PGUP
+define ACT_PREV_FIRE_GROUP          PGDN
 
 define ACT_UI_UP                    'w'
+define ACT_UI_RIGHT                 'd'
 define ACT_UI_DOWN                  's'
 define ACT_UI_LEFT                  'a'
-define ACT_UI_RIGHT                 'd'
-define ACT_UI_PREV_TAB              'q'
-define ACT_UI_NEXT_TAB              'e'
 define ACT_UI_SELECT                ENT 
-define ACT_UI_BACK                  L_SHIFT 
+define ACT_UI_BACK                  L_ALT
+define ACT_UI_NEXT_TAB              'e'
+define ACT_UI_PREV_TAB              'q'
+define ACT_UI_NEXT_PAGE             0
+define ACT_UI_PREV_PAGE             0 
 
-define ACT_LANDING_GEAR             'v'
-define ACT_CARGO_SCOOP              'c'
-define ACT_ORBIT_LINES              'z'
-define ACT_NIGHT_VISION             'x'
-define ACT_ENGINE_BOOST             'b'
-define ACT_HUD_MODE                 'r'
-define ACT_HARDPOINTS               't' 
-define ACT_TARGET_AHEAD             'e' 
-define ACT_TARGET_HIGHEST_THREAT    'q'
+define ACT_TARGET_AHEAD 			      ACT_UI_UP
+define ACT_TARGET_AHEAD_ALT         ACT_UI_RIGHT
+define ACT_TARGET_NEXT_HOSTILE 		  ACT_UI_RIGHT
+define ACT_TARGET_HIGHEST_THREAT    ACT_UI_DOWN
+define ACT_TARGET_PREV_HOSTILE      ACT_UI_LEFT
+define ACT_TARGET_NEXT_JUMP         ACT_UI_SELECT 
 
-define ACT_ENGINES_STOP             '1'
-define ACT_ENGINES_25_PERCENT       '2'
-define ACT_ENGINES_50_PERCENT       '3'
-define ACT_ENGINES_75_PERCENT       '4'
-define ACT_ENGINES_MAX              '5'
+define ACT_USE_SHEILD_CELL          F9
+define ACT_USE_ECM                  F10
+define ACT_USE_HEAT_SINK            F11
+define ACT_USE_CHAFF                F12
 
-define ACT_SUPERCRUISE              'a'
-define ACT_SUPERCRUISE_TOGGLE       's'
-define ACT_HYPERSPACE               'd'
+define ACT_FSD                      DX9
+define ACT_SUPERCRUISE              DX10 
+define ACT_ENGINE_BOOST             DX11 
+define ACT_ENGINE_DECREASE          DX12 
+define ACT_ENGINE_INCREASE          DX13 
+define ACT_ENGINE_STOP              DX14
+define ACT_ENGINE_FULL              DX15 
+
+define ACT_LIGHTS                   '7' 
+define ACT_NIGHT_VISION             '8'
+define ACT_ORBIT_LINES              '9'
+define ACT_HARDPOINTS               '0'
+
+define ACT_THRUSTERS_UP             'i'
+define ACT_THRUSTERS_RIGHT          'l'
+define ACT_THRUSTERS_DOWN           'k'
+define ACT_THRUSTERS_LEFT           'j'
+define ACT_FSS                      'm'
+
+define ACT_HUD_MODE                 INS 
+
+define ACT_SECONDARY_FIRE           DX24
+define ACT_PRIMARY_FIRE             DX16
+
+define ACT_HEADLOOK                 DX25
+define ACT_FLIGHT_ASSIST_OFF        DX26
+define ACT_GALAXY_MAP               DX27
+define ACT_SYSTEM_MAP               DX28
+define ACT_SRV_BOOST                DX29
+define ACT_SRV_TURRET               DX30
+define ACT_ROTATIONAL_CORRECTION    DX31
+define ACT_SILENT_RUNNING           DX32
 
 /*
 	Pip 

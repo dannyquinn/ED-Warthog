@@ -2,7 +2,7 @@ int currentGameStatus;
 int previousGameStatus;
 
 int lockPrimaryFire;
-
+int lockSecondaryFire;
 
 
 
